@@ -2,7 +2,7 @@ import React, { useEffect } from 'react'
 import { useSelector } from 'react-redux'
 import { useNavigate } from 'react-router-dom'
 const Home = () => {
-  const data = useSelector((state) => console.log(state))
+  const data = useSelector((state) => state.userLoginInfo.userLoginInfo)
   const navigate = useNavigate()
   useEffect(()=>{
     if (!data) {
@@ -13,6 +13,6 @@ const Home = () => {
   return (
     <div>HomePage</div>
   )
-}
+}  
 
-export default Home
+export default Home 

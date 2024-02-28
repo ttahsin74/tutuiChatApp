@@ -1,18 +1,18 @@
 import { createSlice } from '@reduxjs/toolkit'
 
 const initialState = {
-  userLoginInfo: null,
+  userLoginInfo: localStorage.getItem("userInfo") ? JSON.parse(localStorage.getItem("userInfo")) : null,
 }
 
-export const counterSlice = createSlice({
+export const userSlice = createSlice({
     name: 'userInfo',
     initialState,
     reducers: {
       addLoginUserInfo: (state, action)=>{
-        
+        state.userLoginInfo=action.payload
       }
     },
   })
 
-
-  export default counterSlice.reducer
+export const {addLoginUserInfo} = userSlice.actions
+  export default userSlice.reducer

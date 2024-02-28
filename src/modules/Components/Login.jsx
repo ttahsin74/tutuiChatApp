@@ -12,7 +12,8 @@ import { FaEyeSlash, FaEye } from "react-icons/fa";
 import { Link, useNavigate } from "react-router-dom";
 import { getAuth, signInWithEmailAndPassword } from "firebase/auth";
 import { ToastContainer, toast } from "react-toastify";
-
+import { useDispatch } from "react-redux";
+import { addLoginUserInfo } from "../../features/user/userSlice";
 
 const Login = () => {
   const [input, setInput] = useState({ email: "", password: "" });
@@ -28,7 +29,8 @@ const Login = () => {
   const [eye, seteye] = useState();
   const [passIcon, setPassIcon] = useState();
   const [passwordType, setPasswordTyp] = useState();
-  const navigate = useNavigate()
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
 
   const handleInput = (e) => {
     const { name, value } = e.target;
@@ -97,8 +99,8 @@ const Login = () => {
     }
     if (!error.emailError && input.password) {
       const auth = getAuth();
-      signInWithEmailAndPassword(auth, input.email, input.password).then(
-        (userCredential) => {
+      signInWithEmailAndPassword(auth, input.email, input.password)
+        .then((userCredential) => {
           toast.success("Logged in", {
             position: "bottom-center",
             autoClose: 1000,
@@ -109,32 +111,32 @@ const Login = () => {
             progress: undefined,
             theme: "light",
           });
-          
+          dispatch(addLoginUserInfo(userCredential))
+          localStorage.setItem("userInfo",JSON.stringify(userCredential))
           setTimeout(() => {
             navigate("/home_page");
           }, 1000);
-          const user = userCredential.user;
-        }
-      )
-      .catch((error) => {
-        const errorCode = error.code;
-        if (errorCode === "auth/invalid-credential") {
-          setError((oldError) => ({
-            ...oldError,
-            emailError: "Invalid Email address or Password",
-          }));
-          toast.error("Invalid Email address or Password", {
-            position: "bottom-center",
-            autoClose: 2000,
-            hideProgressBar: false,
-            closeOnClick: true,
-            pauseOnHover: true,
-            draggable: true,
-            progress: undefined,
-            theme: "light",
-          });
-        }
-      });
+          // const user = userCredential.user;
+        })
+        .catch((error) => {
+          const errorCode = error.code;
+          if (errorCode === "auth/invalid-credential") {
+            setError((oldError) => ({
+              ...oldError,
+              emailError: "Invalid Email address or Password",
+            }));
+            toast.error("Invalid Email address or Password", {
+              position: "bottom-center",
+              autoClose: 2000,
+              hideProgressBar: false,
+              closeOnClick: true,
+              pauseOnHover: true,
+              draggable: true,
+              progress: undefined,
+              theme: "light",
+            });
+          }
+        });
     }
   };
 
@@ -248,9 +250,12 @@ const Login = () => {
                         </label>
                       </div>
                       <div>
-                      <Link to="/forget_password" className="text-[#4d4949d7]">
-                        forget password?
-                      </Link>
+                        <Link
+                          to="/forget_password"
+                          className="text-[#4d4949d7]"
+                        >
+                          forget password?
+                        </Link>
                       </div>
                     </div>
                     <button
