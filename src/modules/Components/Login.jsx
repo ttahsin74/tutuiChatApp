@@ -111,12 +111,12 @@ const Login = () => {
             progress: undefined,
             theme: "light",
           });
-          dispatch(addLoginUserInfo(userCredential))
-          localStorage.setItem("userInfo",JSON.stringify(userCredential))
+          const user = userCredential.user;
+          dispatch(addLoginUserInfo(user))
+          localStorage.setItem("userInfo",JSON.stringify(user))
           setTimeout(() => {
             navigate("/home_page");
           }, 1000);
-          // const user = userCredential.user;
         })
         .catch((error) => {
           const errorCode = error.code;
