@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   FaFacebookF,
   FaTwitter,
@@ -12,6 +12,7 @@ import { Link, useNavigate } from "react-router-dom";
 import { FaEyeSlash, FaEye } from "react-icons/fa";
 import { getAuth, createUserWithEmailAndPassword } from "firebase/auth";
 import { ToastContainer, toast } from "react-toastify";
+import { useSelector } from "react-redux";
 
 const Signup = () => {
   const [input, setInput] = useState({ name: "", email: "", password: "" });
@@ -218,6 +219,13 @@ const Signup = () => {
         });
     }
   };
+  const data = useSelector((state) => state.userLoginInfo.userLoginInfo)
+  useEffect(()=>{
+    if (data) {
+      navigate("/home_page")
+    }
+  },[])
+
   return (
     <section>
       <div className="before:content-[''] before:absolute before:w-1/2 before:top-0 before:left-0 before:min-h-screen custom-bg before:rounded-tr-full before:rounded-br-full before:-z-10 ">

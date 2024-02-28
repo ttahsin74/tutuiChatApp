@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   FaFacebookF,
   FaTwitter,
@@ -12,7 +12,7 @@ import { FaEyeSlash, FaEye } from "react-icons/fa";
 import { Link, useNavigate } from "react-router-dom";
 import { getAuth, signInWithEmailAndPassword } from "firebase/auth";
 import { ToastContainer, toast } from "react-toastify";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { addLoginUserInfo } from "../../features/user/userSlice";
 
 const Login = () => {
@@ -139,6 +139,13 @@ const Login = () => {
         });
     }
   };
+  const data = useSelector((state) => state.userLoginInfo.userLoginInfo)
+
+  useEffect(()=>{
+    if (data) {
+      navigate("/home_page")
+    }
+  },[])
 
   return (
     <section>

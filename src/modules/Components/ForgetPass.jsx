@@ -1,9 +1,10 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { TfiEmail } from "react-icons/tfi";
 
 import { Link, useNavigate } from "react-router-dom";
 import { ToastContainer, toast } from "react-toastify";
 import { getAuth, sendPasswordResetEmail } from "firebase/auth";
+import { useSelector } from "react-redux";
 
 const ForgetPass = () => {
   const [input, setInput] = useState({ email: "" });
@@ -104,7 +105,12 @@ const ForgetPass = () => {
       });
     }
   };
-
+  const data = useSelector((state) => state.userLoginInfo.userLoginInfo)
+  useEffect(()=>{
+    if (data) {
+      navigate("/home_page")
+    }
+  },[])
   return (
     <section>
       <div className="before:content-[''] before:absolute before:w-1/2 before:top-0 before:left-0 before:min-h-screen custom-bg before:rounded-tr-full before:rounded-br-full before:-z-10 ">
