@@ -1,0 +1,11 @@
+.custom-login-box {
+  box-shadow: 3px -1px 29px -8px rgba(0, 0, 0, 0.7);
+  -webkit-box-shadow: 3px -1px 29px -8px rgba(0, 0, 0, 0.7);
+  -moz-box-shadow: 3px -1px 29px -8px rgba(0, 0, 0, 0.7);
+}
+.custom-bg::before {
+  background: linear-gradient(132deg, #fc415a, #591bc5, #212335);
+}
+  .Toastify__progress-bar--wrp {
+    visibility: hidden;
+  }
