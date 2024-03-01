@@ -10,7 +10,11 @@ import { MdLockOutline } from "react-icons/md";
 import { FaEyeSlash, FaEye } from "react-icons/fa";
 
 import { Link, useNavigate } from "react-router-dom";
-import { getAuth, signInWithEmailAndPassword } from "firebase/auth";
+import {
+  getAuth,
+  signInWithEmailAndPassword,
+  onAuthStateChanged,
+} from "firebase/auth";
 import { ToastContainer, toast } from "react-toastify";
 import { useDispatch, useSelector } from "react-redux";
 import { addLoginUserInfo } from "../../features/user/userSlice";
@@ -101,22 +105,35 @@ const Login = () => {
       const auth = getAuth();
       signInWithEmailAndPassword(auth, input.email, input.password)
         .then((userCredential) => {
-          toast.success("Logged in", {
-            position: "bottom-center",
-            autoClose: 1000,
-            hideProgressBar: false,
-            closeOnClick: false,
-            pauseOnHover: true,
-            draggable: true,
-            progress: undefined,
-            theme: "light",
-          });
           const user = userCredential.user;
-          dispatch(addLoginUserInfo(user))
-          localStorage.setItem("userInfo",JSON.stringify(user))
-          setTimeout(() => {
-            navigate("/home_page");
-          }, 1000);
+          if (user.emailVerified) {
+            toast.success("Logged in", {
+              position: "bottom-center",
+              autoClose: 1000,
+              hideProgressBar: false,
+              closeOnClick: false,
+              pauseOnHover: true,
+              draggable: true,
+              progress: undefined,
+              theme: "light",
+            });
+            dispatch(addLoginUserInfo(user));
+            localStorage.setItem("userInfo", JSON.stringify(user));
+            setTimeout(() => {
+              navigate("/home_page");
+            }, 1000);
+          }else{
+            toast.error("Please varify your email !", {
+              position: "bottom-center",
+              autoClose: 1000,
+              hideProgressBar: false,
+              closeOnClick: false,
+              pauseOnHover: true,
+              draggable: true,
+              progress: undefined,
+              theme: "light",
+            });
+          }
         })
         .catch((error) => {
           const errorCode = error.code;
@@ -139,13 +156,13 @@ const Login = () => {
         });
     }
   };
-  const data = useSelector((state) => state.userLoginInfo.userLoginInfo)
+  const data = useSelector((state) => state.userLoginInfo.userLoginInfo);
 
-  useEffect(()=>{
+  useEffect(() => {
     if (data) {
-      navigate("/home_page")
+      navigate("/home_page");
     }
-  },[])
+  }, []);
 
   return (
     <section>

@@ -7,7 +7,6 @@ import {
   FiArchive,
   FiMoon,
 } from "react-icons/fi";
-import smallDp from "../../assets/profilepic.jpg";
 import { getAuth, signOut } from "firebase/auth";
 import { useNavigate } from "react-router-dom";
 import { useDispatch} from 'react-redux';
@@ -18,61 +17,63 @@ const HomeSideber = () => {
   const navigate = useNavigate();
   const [logout, setLogout] = useState();
   const dispatch = useDispatch()
-  
+  const userInfo = JSON.parse(localStorage.getItem('userInfo'));
   const handleSureLogout = () => {
     const auth = getAuth();
+
     signOut(auth)
     .then(() => {
       localStorage.removeItem("userInfo");
       dispatch(addLoginUserInfo(null))
       navigate("/login")
       })
-      .catch((error) => {
-        // An error happened.
-      });
-  };
+      // .catch((error) => {
+      //   // An error happened.
+      // });
+    };
 
   return (
     <div className="w-[100px] border-r-2">
       <ul className="flex flex-col items-center gap-9  h-screen min-h-[500px] bg-[#fefe]">
         <li>
-          <a href="" className="text-[90px] text-[#0A80FF]">
+          <a href="" className="text-[90px] text-[#0A80FF] hover:text-[#0A80FF] duration-300">
             <BiMessageRoundedDetail className="py-5 " />
           </a>
         </li>
         <li>
-          <a href="" className="text-2xl">
+          <a href="" className="text-2xl hover:text-[#0A80FF] duration-300">
             <FiMessageCircle />
           </a>
         </li>
         <li>
-          <a href="" className="text-2xl">
+          <a href="" className="text-2xl hover:text-[#0A80FF] duration-300">
             <FiUser />
           </a>
         </li>
         <li>
-          <a href="" className="text-2xl">
+          <a href="" className="text-2xl hover:text-[#0A80FF] duration-300">
             <FiStar />
           </a>
         </li>
         <li>
-          <a href="" className="text-2xl">
+          <a href="" className="text-2xl hover:text-[#0A80FF] duration-300">
             <FiArchive />
           </a>
         </li>
         <li className="mt-auto">
-          <a href="" className="text-2xl">
+          <a href="" className="text-2xl hover:text-[#0A80FF] duration-300">
             <FiMoon />
           </a>
         </li>
         <li>
           <div className="relative p-4 m-3">
             <div className="">
-              <img
-                onClick={() => setProfileMenu(!profileMenu)}
-                className="rounded-full"
-                src={smallDp}
-              />
+                <img
+                  onClick={() => setProfileMenu(!profileMenu)}
+                  className="rounded-full"
+                  src={userInfo.photoURL}
+                  alt="Profile Picture"
+                />
             </div>
             {profileMenu && (
               <div

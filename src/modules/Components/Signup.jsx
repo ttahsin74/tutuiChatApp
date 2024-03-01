@@ -10,9 +10,15 @@ import { TfiEmail } from "react-icons/tfi";
 import { MdLockOutline } from "react-icons/md";
 import { Link, useNavigate } from "react-router-dom";
 import { FaEyeSlash, FaEye } from "react-icons/fa";
-import { getAuth, createUserWithEmailAndPassword } from "firebase/auth";
+import {
+  getAuth,
+  createUserWithEmailAndPassword,
+  sendEmailVerification,
+  updateProfile,
+} from "firebase/auth";
 import { ToastContainer, toast } from "react-toastify";
 import { useSelector } from "react-redux";
+import defaultProfile from "../../../src/assets/default-profile-pic.png";
 
 const Signup = () => {
   const [input, setInput] = useState({ name: "", email: "", password: "" });
@@ -180,23 +186,28 @@ const Signup = () => {
       const auth = getAuth();
       createUserWithEmailAndPassword(auth, input.email, input.password)
         .then((userCredential) => {
-          // console.log("thik ace sob");
-          toast.success("Succesfully create account", {
-            position: "bottom-center",
-            autoClose: 1000,
-            hideProgressBar: false,
-            closeOnClick: false,
-            pauseOnHover: true,
-            draggable: true,
-            progress: undefined,
-            theme: "light",
-          });
+          sendEmailVerification(auth.currentUser).then(() => {
+            updateProfile(auth.currentUser, {
+              displayName: input.name,
+              photoURL: defaultProfile,
+            }).then(() => {
+              toast.success("Varify your Email account", {
+                position: "bottom-center",
+                autoClose: 3000,
+                hideProgressBar: false,
+                closeOnClick: false,
+                pauseOnHover: true,
+                draggable: true,
+                progress: undefined,
+                theme: "light",
+              });
 
-          const user = userCredential.user;
-          console.log(user);
-          setTimeout(() => {
-            navigate("/login");
-          }, 1000);
+              const user = userCredential.user;
+              setTimeout(() => {
+                navigate("/varify_email");
+              }, 3000);
+            });
+          });
         })
         .catch((error) => {
           if (error.code === "auth/email-already-in-use") {
@@ -219,12 +230,12 @@ const Signup = () => {
         });
     }
   };
-  const data = useSelector((state) => state.userLoginInfo.userLoginInfo)
-  useEffect(()=>{
+  const data = useSelector((state) => state.userLoginInfo.userLoginInfo);
+  useEffect(() => {
     if (data) {
-      navigate("/home_page")
+      navigate("/home_page");
     }
-  },[])
+  }, []);
 
   return (
     <section>
