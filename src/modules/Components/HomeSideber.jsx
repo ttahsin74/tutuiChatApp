@@ -96,7 +96,7 @@ const HomeSideber = () => {
                 <img
                   onClick={() => setProfileMenu(!profileMenu)}
                   className="rounded-full"
-                  src={userInfo.photoURL}
+                  src=""
                   alt="Profile Picture"
                 />
               </div>

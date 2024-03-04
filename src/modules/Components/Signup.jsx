@@ -237,8 +237,7 @@ const Signup = () => {
               emailError: "Duplicate Email",
             }));
           }
-        });
-    }
+        });    }
   };
   const data = useSelector((state) => state.userLoginInfo.userLoginInfo);
   useEffect(() => {

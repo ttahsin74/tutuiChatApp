@@ -5,7 +5,7 @@ import FirnedImg from "../../assets/download.jpeg";
 const Chats = () => {
   return (
     <div className="flex flex-col w-[350px] h-screen overflow-y-auto border-x-2 scrollbar-hide">
-      <div className="sticky top-0 bg-white">
+      <div className="sticky -z-30 top-0 bg-white">
         <div className="flex justify-between items-center px-7 py-5">
         <h3 className="text-2xl font-semibold">Chats</h3>
         <div className="flex gap-2 text-[#525558]">
