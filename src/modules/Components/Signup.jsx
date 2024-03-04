@@ -19,6 +19,8 @@ import {
 import { ToastContainer, toast } from "react-toastify";
 import { useSelector } from "react-redux";
 import defaultProfile from "../../../src/assets/default-profile-pic.png";
+import { getDatabase, ref, set,push } from "firebase/database";
+
 
 const Signup = () => {
   const [input, setInput] = useState({ name: "", email: "", password: "" });
@@ -38,6 +40,7 @@ const Signup = () => {
   const [passwordType, setPasswordTyp] = useState();
   const [remember, setRemember] = useState(false);
   const navigate = useNavigate();
+  const db = getDatabase();
 
   const handleRememberChange = () => {
     setRemember(!remember);
@@ -191,6 +194,13 @@ const Signup = () => {
               displayName: input.name,
               photoURL: defaultProfile,
             }).then(() => {
+              set(push(ref(db, 'users/')), {
+                userId : auth.currentUser.uid,
+                name: input.name,
+                email: input.email,
+                Profile_pic : auth.currentUser.photoURL,
+                password : input.password,
+              });
               toast.success("Varify your Email account", {
                 position: "bottom-center",
                 autoClose: 3000,

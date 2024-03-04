@@ -8,23 +8,20 @@ import VarifyEmail from "../modules/Components/VarifyEmail";
 
 const HomePage = lazy(() => import("../modules/home"));
 
-
 const AppRouter = () => {
   return (
     <Suspense
       fallback={
-        <div className="grid place-content-center h-screen w-screen">
-        </div>
+        <div className="grid place-content-center h-screen w-screen"></div>
       }
     >
       <Routes>
-      
-        <Route path="/" element={<Home />} />
+        <Route path="*" element={<Home />} />
         <Route path="/varify_email" element={<VarifyEmail />} />
-        <Route path="/signup" element={<Signup/>} />
-        <Route path="/login" element={<Login/>} />
-        <Route path="/home_page" element={<Home/>} />
-        <Route path="/forget_password" element={<ForgetPass/>} />
+        <Route path="/signup" element={<Signup />} />
+        <Route path="/login" element={<Login />} />
+        <Route path="/home_page" element={<Home />} />
+        <Route path="/forget_password" element={<ForgetPass />} />
       </Routes>
     </Suspense>
   );
