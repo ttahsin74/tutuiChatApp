@@ -10,16 +10,14 @@ import {
 } from "react-icons/fi";
 import { MdOutlineEdit } from "react-icons/md";
 import { RxCross2 } from "react-icons/rx";
-import { TiEdit, TiCameraOutline } from "react-icons/ti";
+import { TiEdit } from "react-icons/ti";
 import { MdPhotoCamera } from "react-icons/md";
 
 import { getAuth, signOut } from "firebase/auth";
 import { Link, useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { addLoginUserInfo } from "../../features/user/userSlice";
-import { getDatabase, ref, set } from "firebase/database";
-
-
+import { getDatabase, ref, onValue } from "firebase/database";
 
 const HomeSideber = () => {
   const [profileMenu, setProfileMenu] = useState();
@@ -29,6 +27,7 @@ const HomeSideber = () => {
   const [selectedImage, setSelectedImage] = useState(null);
   const dispatch = useDispatch();
   const userInfo = JSON.parse(localStorage.getItem("userInfo"));
+
   const handleSureLogout = () => {
     const auth = getAuth();
 
@@ -46,32 +45,58 @@ const HomeSideber = () => {
     setSelectedImage(file);
   };
   const handleUpload = () => {
-    setSelectedImage(false)
+    setSelectedImage(false);
   };
   const handleItemEdit = (item) => {
     console.log(item);
   };
+  // const [usersData, setUsersData] = useState();
 
+  // const db = getDatabase();
+  // const userRef = ref(db, "users/");
+  // useEffect(() => {
+  //   const user = [];
+  //   onValue(userRef, (snapshot) => {
+
+  //     snapshot.forEach((user)=>{
+  //       user.push(user.val());
+  //     })
+  //     setUsersData(push(user.val()))
+  //   });
+  // },[]);
+  // console.log(usersData);
+  const db = getDatabase();
+  const userRef = ref(db, "users/");
+  const [users, setUsers] = useState();
+  useEffect(() => {
+    onValue(userRef, (snapshot) => {
+      let users = [];
+      const data = snapshot.val();
+      snapshot.forEach((user) => {
+        users.push(user.val());
+      });
+      setUsers(users);
+    });
+  }, []);
   return (
     <>
       <div className="w-[100px]">
         <ul className="flex flex-col items-center gap-9  h-screen min-h-[500px] bg-[#fefe]">
           <li>
-            <Link
-              className="text-[90px] text-[#0A80FF] hover:text-[#0A80FF] duration-300"
-            >
+            <Link className="text-[90px] text-[#0A80FF] hover:text-[#0A80FF] duration-300">
               <BiMessageRoundedDetail className="py-5 " />
             </Link>
           </li>
           <li>
-            <Link  to = "/"
-            className="text-2xl hover:text-[#0A80FF] duration-300">
+            <Link to="/" className="text-2xl hover:text-[#0A80FF] duration-300">
               <FiMessageCircle />
             </Link>
           </li>
           <li>
-            <Link to = "/users" 
-            className="text-2xl hover:text-[#0A80FF] duration-300">
+            <Link
+              to="/users"
+              className="text-2xl hover:text-[#0A80FF] duration-300"
+            >
               <FiUser />
             </Link>
           </li>
